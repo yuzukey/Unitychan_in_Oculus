@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.VR;
 
 public class UnitychanDemo_in_Oculus : MonoBehaviour {
 
     private Animator animator;
-    public bool isSpace = true;
+    public bool IsSpace = true;
+    private GameObject unitychan;
+    private GameObject unitychanHead;
+    private Vector3 unitychanEyeVector;
+    private Vector3 cameraVector;
 
 	// Use this for initialization
 	void Start () {
@@ -13,12 +18,22 @@ public class UnitychanDemo_in_Oculus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(Input.GetKey("space")){
+        
+
+        Quaternion cameraRotation = InputTracking.GetLocalRotation(VRNode.CenterEye);
+        unitychanHead = GameObject.FindWithTag("Unitychan_Head");
+        Debug.Log(unitychanHead);
+        Quaternion unitychanRotation = unitychanHead.transform.rotation;
+        unitychanEyeVector = unitychanRotation * Vector3.forward;
+        cameraVector = cameraRotation * Vector3.forward;
+
+        if (Vector3.Dot(unitychanEyeVector, cameraVector) > -1.1 || Vector3.Dot(unitychanEyeVector, cameraVector) < -0.9)
+        {
             animator.SetBool("gesture", true);
-            isSpace = true;
+            IsSpace = true;
         }else{
             animator.SetBool("gesture", false);
-            isSpace = false;
+            IsSpace = false;
         }
 	}
 }
