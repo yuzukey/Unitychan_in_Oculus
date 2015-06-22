@@ -5,7 +5,6 @@ using UnityEngine.VR;
 public class UnitychanDemo_in_Oculus : MonoBehaviour {
 
     private Animator animator;
-    public bool IsSpace = true;
     private GameObject unitychan;
     private GameObject unitychanHead;
     private Vector3 unitychanEyeVector;
@@ -21,19 +20,18 @@ public class UnitychanDemo_in_Oculus : MonoBehaviour {
         
 
         Quaternion cameraRotation = InputTracking.GetLocalRotation(VRNode.CenterEye);
+        Debug.Log(cameraRotation);
         unitychanHead = GameObject.FindWithTag("Unitychan_Head");
-        Debug.Log(unitychanHead);
         Quaternion unitychanRotation = unitychanHead.transform.rotation;
+        Debug.Log(unitychanRotation);
         unitychanEyeVector = unitychanRotation * Vector3.forward;
         cameraVector = cameraRotation * Vector3.forward;
 
-        if (Vector3.Dot(unitychanEyeVector, cameraVector) > -1.1 || Vector3.Dot(unitychanEyeVector, cameraVector) < -0.9)
+        if (Vector3.Dot(unitychanEyeVector, cameraVector) > -1.05 && Vector3.Dot(unitychanEyeVector, cameraVector) < -0.95)
         {
             animator.SetBool("gesture", true);
-            IsSpace = true;
         }else{
             animator.SetBool("gesture", false);
-            IsSpace = false;
         }
 	}
 }
